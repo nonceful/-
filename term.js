@@ -5,28 +5,31 @@ terminal.open(document.getElementById('terminal-container'));
 fitAddon.fit();
 
 const socket = io('http://localhost:3000/admin', {
-  query: {
-      admin: 'true'
-  }
+    query: {
+        admin: 'true'
+    }
 });
 socket.on('connect', () => {
-            console.log('Connected to server');
+    console.log('Connected to server');
 });
 
 
-  terminal.onData((data) => {
-            socket.emit('terminal_input',);
-  });
+terminal.onData((data) => {
+    socket.emit('terminal_input',);
+});
 
-  socket.on('terminal_output', (data) => {
-            terminal.write(data);
-  });
+socket.on('terminal_output', (data) => {
+    terminal.write(data);
+});
+socket.on('message', (data) => {
+    terminal.write('Message received from server\n' + data);
+})
 
-  window.addEventListener('resize', () => {
-            fitAddon.fit();
-          const size = {
-            cols: terminal.cols,
-          rows: terminal.rows,
+window.addEventListener('resize', () => {
+    fitAddon.fit();
+    const size = {
+        cols: terminal.cols,
+        rows: terminal.rows,
     };
-          socket.emit('resize', size);
-  });
+    socket.emit('resize', size);
+});
