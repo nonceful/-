@@ -8,17 +8,17 @@ const socket = io('http://localhost:3000/admin', {
   query: {
       admin: 'true'
   }
-}
+});
 socket.on('connect', () => {
             console.log('Connected to server');
 });
 
 
-  terminal.onData((data: string) => {
+  terminal.onData((data) => {
             socket.emit('terminal_input',);
   });
 
-  socket.on('terminal_output', (data: string) => {
+  socket.on('terminal_output', (data) => {
             terminal.write(data);
   });
 
